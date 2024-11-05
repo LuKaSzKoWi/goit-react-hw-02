@@ -14,3 +14,5 @@ function Feedback({ feedback, total, positivePercentage }) {
 }
 
 export default Feedback;
+
+
