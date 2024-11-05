@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// 
+
+import React, { useState } from 'react';
+import Feedback from './components/Feedback';
+import Options from './components/Options';
 
 function App() {
-  const [count, setCount] = useState(0)
+    // Stan przechowujący liczbę opinii
+    const [feedback, setFeedback] = useState({
+        good: 0,
+        neutral: 0,
+        bad: 0,
+    });
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    // Funkcja do aktualizacji liczby ocen
+    const handleFeedback = (type) => {
+        setFeedback((prevFeedback) => ({
+            ...prevFeedback,
+            [type]: prevFeedback[type] + 1,
+        }));
+    };
+
+    // Obliczanie całkowitej liczby opinii i procentu pozytywnych opinii
+    const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
+    const positivePercentage = totalFeedback
+        ? Math.round((feedback.good / totalFeedback) * 100)
+        : 0;
+
+    return (
+        <div>
+            <h1>Sip Happens Café</h1>
+            <p>Please leave your feedback about our service by selecting one of the options below.</p>
+            <Options onLeaveFeedback={handleFeedback} />
+            <Feedback
+                feedback={feedback}
+                total={totalFeedback}
+                positivePercentage={positivePercentage}
+            />
+        </div>
+    );
 }
 
-export default App
+export default App;
